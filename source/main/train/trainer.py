@@ -25,49 +25,6 @@ class MyTrainingChecker(TrainingChecker):
         }, file_name)
 
 
-def cal_word_acc(prediction, target, seq_len):
-    """
-    All params are numpy arrays
-    :param prediction: shape == (batch_size, max_len)
-    :param target: shape == (batch_size, max_len)
-    :param seq_len: shape == (batch_size)
-    :return:
-    """
-    # shape == (batch_size, max_len)
-
-    count_true = (prediction == target).astype(float)
-
-    mask = np.zeros(count_true.shape)
-
-    for idx, doc_len in enumerate(seq_len):
-        mask[idx, :doc_len] = 1
-
-    count_true *= mask
-
-    acc = float(np.sum(count_true) / np.sum(seq_len))
-    return acc
-
-
-def cal_sen_acc(prediction, target, seq_len):
-    """
-    All params are numpy arrays
-    :param prediction: shape == (batch_size, max_len)
-    :param target: shape == (batch_size, max_len)
-    :param seq_len: shape == (batch_size)
-    :return:
-    """
-    # shape == (batch_size, max_len)
-    mask = np.zeros_like(prediction)
-
-    for idx, doc_len in enumerate(seq_len):
-        mask[idx, :doc_len] = 1
-
-    prediction = prediction * mask
-    target = target * mask
-    acc = np.sum(np.all(prediction == target, axis=1)) / prediction.shape[0]
-    return acc
-
-
 def train(model, train_loader, eval_loader, dir_checkpoint, device, num_epoch=10, print_every=1000, predict_every=500,
           eval_every=500, input_transform=None, output_transform=None, init_step=0):
     if input_transform is None:

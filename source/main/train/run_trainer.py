@@ -8,7 +8,7 @@ from train.trainer import train
 
 
 def input2_text(first_input, *params):
-    return my_dataset.voc_src.idx2docs(first_input)
+    return my_dataset.voc.idx2docs(first_input)
 
 
 def target2_text(first_input, *params):
@@ -29,11 +29,11 @@ if __name__ == '__main__':
     train_loader = my_dataset.get_dl_train(batch_size=BATCH_SIZE, size=None)
     eval_loader = my_dataset.get_dl_eval(batch_size=BATCH_SIZE, size=None)
     logging.info('There will be %s steps for training', NUM_EPOCHS * (len(train_loader)/BATCH_SIZE))
-    model = Seq2SeqAttnWithSrc(src_vocab_size=len(my_dataset.voc_src.index2word),
-                    tgt_vocab_size=len(my_dataset.voc_tgt.index2word),
-                    start_idx=2,
-                    end_idx=3
-                    )
+    model = Seq2SeqAttnWithSrc(src_vocab_size=len(my_dataset.voc.index2word),
+                               tgt_vocab_size=len(my_dataset.voc_tgt.index2word),
+                               start_idx=2,
+                               end_idx=3
+                               )
     model.train()
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model.to(device)

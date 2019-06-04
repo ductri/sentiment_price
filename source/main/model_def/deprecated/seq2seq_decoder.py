@@ -1,7 +1,7 @@
 import torch
 from torch import nn
 
-from model_def.deprecated.attention import Attention
+from model_def.attention import Attention
 
 
 class DecoderGreedyInfer(nn.Module):

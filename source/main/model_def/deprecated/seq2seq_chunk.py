@@ -2,7 +2,7 @@ import torch
 from torch import nn, optim
 
 from model_def.deprecated.decoder import DecoderGreedyWithSrcInfer, AttnRawDecoderWithSrc
-from model_def.deprecated.encoder import Encoder, FlattenHiddenLSTM
+from model_def.encoder import Encoder, FlattenHiddenLSTM
 from utils import pytorch_utils
 
 

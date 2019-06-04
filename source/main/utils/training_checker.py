@@ -46,3 +46,17 @@ class TrainingChecker:
             os.rmdir(self._dir_checkpoint)
         else:
             raise Exception('There are more than 1 file in checkpoint directory, check it !!!')
+
+
+class MyTrainingChecker(TrainingChecker):
+    def __init__(self, model, dir_checkpoint, init_score):
+        super(MyTrainingChecker, self).__init__(model, dir_checkpoint + '/' + model.__class__.__name__, init_score)
+
+    def save_model(self):
+        file_name = os.path.join(self._dir_checkpoint, '%s.pt' % self._step)
+        torch.save({
+            'model_state_dict': self._model.state_dict(),
+            'optimizer': self._model.optimizer.state_dict(),
+            'step': self._step,
+            'best_score': self._score
+        }, file_name)

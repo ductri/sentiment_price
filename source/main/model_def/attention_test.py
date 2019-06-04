@@ -1,7 +1,7 @@
 import unittest
 import torch
 
-from model_def.deprecated.attention import Attention
+from model_def.attention import Attention
 
 
 class TestAttention(unittest.TestCase):

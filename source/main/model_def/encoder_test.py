@@ -1,7 +1,7 @@
 import unittest
 import torch
 
-from model_def.deprecated.encoder import Encoder
+from model_def.encoder import Encoder
 
 
 class TestEncoder(unittest.TestCase):
@@ -12,7 +12,7 @@ class TestEncoder(unittest.TestCase):
         batch_size = docs.size(0)
 
         encoder = Encoder(vocab_size=5)
-        h_n, c_n, _ = encoder(docs)
+        _, (h_n, c_n) = encoder(docs)
 
         self.assertEqual(h_n.shape, (6, batch_size, 512))
         self.assertEqual(c_n.shape, (6, batch_size, 512))
@@ -26,11 +26,11 @@ class TestEncoder(unittest.TestCase):
         encoder = Encoder(vocab_size=vocab_size, is_bidirectional=False)
         encoder.eval()
         with torch.no_grad():
-            h_n_1, c_n_1, _ = encoder(docs)
+            _, (h_n_1, c_n_1) = encoder(docs)
 
-            h_n_2, c_n_2, _ = encoder(docs[:, 0:1])
+            _, (h_n_2, c_n_2) = encoder(docs[:, 0:1])
             for step in range(1, seq_len):
-                h_n_2, c_n_2, _ = encoder(docs[:, step:step+1], (h_n_2, c_n_2))
+                _, (h_n_2, c_n_2) = encoder(docs[:, step:step+1], (h_n_2, c_n_2))
 
             self.assertEqual(torch.norm(h_n_1 - h_n_2), 0)
             self.assertEqual(torch.norm(c_n_1 - c_n_2), 0)

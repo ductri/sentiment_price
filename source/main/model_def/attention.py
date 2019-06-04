@@ -5,7 +5,7 @@ from torch import nn
 class Attention(nn.Module):
     def __init__(self, enc_output_size, dec_output_size):
         super(Attention, self).__init__()
-        self.attention_size = 256
+        self.attention_size = 512
         self.scoring = nn.Linear(dec_output_size, enc_output_size)
         self.softmax = nn.Softmax(dim=1)
 
