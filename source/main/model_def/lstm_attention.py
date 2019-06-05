@@ -48,7 +48,7 @@ class LSTMAttention(nn.Module):
 
     def train(self, mode=True):
         if self.xent is None:
-            self.xent = nn.CrossEntropyLoss(reduction='none')
+            self.xent = nn.CrossEntropyLoss(reduction='mean', weight=torch.tensor([1., 3.]).cuda())
         if self.optimizer is None:
             self.optimizer = optim.Adam(self.parameters(), lr=0.001)
         super().train(mode)
@@ -62,7 +62,6 @@ class LSTMAttention(nn.Module):
         """
         logits = self.__inner_forward(word_input)
         loss = self.xent(logits, target)
-        loss = torch.mean(loss, dim=0)
         return loss
 
     def train_batch(self, word_input, target):

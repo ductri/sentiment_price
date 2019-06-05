@@ -15,7 +15,7 @@ ROOT = '/source/'
 
 
 class Docs(Dataset):
-    def __init__(self, path_to_file, size=None):
+    def __init__(self, path_to_file, size=None, is_scale=False):
         super(Docs, self).__init__()
         df = pd.read_csv(path_to_file)
         data = df[['mention', 'label']]
@@ -24,7 +24,12 @@ class Docs(Dataset):
 
         size = size or data.shape[0]
         data = data.sample(size)
-
+        if is_scale:
+            pos = data[data['label'] == 1]
+            neg = data[data['label'] == 0]
+            data = pos.append(neg.sample(pos.shape[0] * 10))
+            data = data.sample(data.shape[0])
+        logging.info('Label distribution: \n%s', data['label'].value_counts())
         self.mention = list(data['mention'])
         self.label = list(data['label'])
 
@@ -49,7 +54,7 @@ def bootstrap():
     logging.info('Vocab from file %s contains %s tokens', path_src, len(voc.index2word))
 
 
-def create_data_loader(path_to_csv, batch_size, num_workers, size=None, shuffle=True):
+def create_data_loader(path_to_csv, batch_size, num_workers, size=None, shuffle=True, is_scale=True):
     def collate_fn(list_data):
         """
         shape == (batch_size, col1, col2, ...)
@@ -59,7 +64,7 @@ def create_data_loader(path_to_csv, batch_size, num_workers, size=None, shuffle=
         data = [torch.from_numpy(col) for col in data]
         return data
 
-    my_dataset = Docs(path_to_csv, size=size)
+    my_dataset = Docs(path_to_csv, size=size, is_scale=True)
     logging.info('Data at %s contains %s samples', path_to_csv, len(my_dataset))
     dl = DataLoader(dataset=my_dataset, batch_size=batch_size, shuffle=shuffle, num_workers=num_workers, collate_fn=collate_fn)
     return dl
@@ -67,7 +72,7 @@ def create_data_loader(path_to_csv, batch_size, num_workers, size=None, shuffle=
 
 def get_dl_train(batch_size, size=None):
     return create_data_loader(ROOT + 'main/data_for_train/output/is_price/train.csv', batch_size,
-                              NUM_WORKERS, size=size, shuffle=True)
+                              NUM_WORKERS, size=size, shuffle=True, is_scale=True)
 
 
 def get_dl_test(batch_size):
@@ -77,4 +82,4 @@ def get_dl_test(batch_size):
 
 def get_dl_eval(batch_size, size=None):
     return create_data_loader(ROOT + 'main/data_for_train/output/is_price/eval.csv', batch_size,
-                              NUM_WORKERS, shuffle=False, size=size)
+                              NUM_WORKERS, shuffle=False, size=size, is_scale=True)

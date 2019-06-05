@@ -1,0 +1,145 @@
+- Data:
+2019-06-04T09:31:32.554087774Z INFO:root:Data at /source/main/data_for_train/output/is_price/train.csv contains 371903 samples
+2019-06-04T09:31:32.657445354Z INFO:root:Data at /source/main/data_for_train/output/is_price/eval.csv contains 9633 samples
+
+
+- Model `LSTMBaseline`
+2019-06-04T09:23:11.836732500Z INFO:root:	------------------ 	Begin Evaluation	------------------
+2019-06-04T09:23:24.837595442Z INFO:root:Number of batchs: 76
+2019-06-04T09:23:24.843150746Z INFO:root:L_mean: 0.0443±0.0204 	 	 P: 0.8474±0.0000 	 R: 0.8129±0.0000 	 F1: 0.8292±0.0000 	 Duration: 13.006 s/step
+2019-06-04T09:23:24.843164575Z INFO:root:	------------------ 	End Evaluation	------------------
+2019-06-04T09:23:24.843169376Z
+2019-06-04T09:23:24.843172618Z
+2019-06-04T09:23:25.217287044Z INFO:root:New best score: -0.04425140405318847
+2019-06-04T09:23:25.217307155Z INFO:root:Saved model at /source/main/train/output/saved_models//LSTMBaseline/2019-06-04T09:03:56
+2019-06-04T09:23:25.217311409Z INFO:root:Current best score: -0.04425140405318847 recorded at step 3500
+
+- Model `LSTMAttention`
+2019-06-04T10:03:49.123258517Z INFO:root:	------------------ 	Begin Evaluation	------------------
+2019-06-04T10:04:02.395270722Z INFO:root:Number of batchs: 76
+2019-06-04T10:04:02.401227588Z INFO:root:L_mean: 0.0426±0.0218 	 	 P: 0.8569±0.0000 	 R: 0.8202±0.0000 	 F1: 0.8375±0.0000 	 Duration: 13.278 s/step
+2019-06-04T10:04:02.401252181Z INFO:root:	------------------ 	End Evaluation	------------------
+2019-06-04T10:04:02.401256561Z
+2019-06-04T10:04:02.401259684Z
+2019-06-04T10:04:02.792808843Z INFO:root:New best score: -0.04261170839890838
+2019-06-04T10:04:02.792831350Z INFO:root:Saved model at /source/main/train/output/saved_models//LSTMAttention/2019-06-04T09:31:37
+2019-06-04T10:04:02.792884567Z INFO:root:Current best score: -0.04261170839890838 recorded at step 5500
+
+-0.043102150733925794 recorded at step 6500 (/source/main/train/output/saved_models//LSTMAttention/2019-06-04T10:32:35)
+
+- /source/main/train/output/saved_models//LSTMBaseline/2019-06-04T09:03:56/3500.pt
++ ROC_AUC = 0.9807160140958707
++               precision    recall  f1-score   support
+
+           0       0.99      0.99      0.99      9723
+           1       0.77      0.65      0.71       277
+
+    accuracy                           0.99     10000
+   macro avg       0.88      0.82      0.85     10000
+weighted avg       0.98      0.99      0.98     10000
+
+- /source/main/train/output/saved_models//LSTMAttention/2019-06-04T09:31:37/5500.pt
++ ROC_AUC = 0.9867577380813145
++              precision    recall  f1-score   support
+
+           0       0.99      1.00      0.99      9723
+           1       0.80      0.65      0.71       277
+
+    accuracy                           0.99     10000
+   macro avg       0.89      0.82      0.85     10000
+weighted avg       0.98      0.99      0.98     10000
+
+- /source/main/train/output/saved_models//LSTMAttention/2019-06-04T10:32:35/6500.pt
++ ROC_AUC = 0.9841941267700131
+              precision    recall  f1-score   support
+
+           0       0.99      0.99      0.99      9723
+           1       0.72      0.77      0.74       277
+
+    accuracy                           0.99     10000
+   macro avg       0.86      0.88      0.87     10000
+weighted avg       0.99      0.99      0.99     10000
+
+** ANALYSE
+
+- /source/main/train/output/saved_models//LSTMAttention/2019-06-04T09:31:37/5500.pt
++ ROC_AUC = 0.9867577380813145
++              precision    recall  f1-score   support
+
+           0       0.99      1.00      0.99      9723
+           1       0.80      0.65      0.71       277
+
+* P = 0.80
+- 46 mentions (pred=1 & label=0): All are about price
+- Nhieu case auto predict sai qua:
++ Đắt lòi (0.18)
++ Bao nhiêu lon 900gr vậy chị , để em đổi sữa này cho bé xem sao (0.48)
++ C friso 1 400g nhiu a (0.3)
++ Mình mua 400gr 265k (0.29)
++ giá (0.47)
++ Tv Sony có giảm ko ạ (0.17)
+
+
+- Weight = 1:32
+2019-06-05T04:34:37.877482037Z INFO:root:	------------------ 	Begin Evaluation	------------------
+2019-06-05T04:34:50.927661708Z INFO:root:Number of batchs: 76
+2019-06-05T04:34:50.933724892Z INFO:root:L_mean: 0.1693±0.1800 	 	 P: 0.6498±0.0000 	 R: 0.9435±0.0000 	 F1: 0.7111±0.0000 	 Duration: 13.056 s/step
+2019-06-05T04:34:50.933740465Z INFO:root:	------------------ 	End Evaluation	------------------
+2019-06-05T04:34:50.933773055Z
+2019-06-05T04:34:50.933777933Z
+2019-06-05T04:34:51.332880855Z INFO:root:New best score: -0.16925187492252966
+2019-06-05T04:34:51.332907845Z INFO:root:Saved model at /source/main/train/output/saved_models//LSTMAttention/2019-06-05T04:26:25
+2019-06-05T04:34:51.332913689Z INFO:root:Current best score: -0.16925187492252966 recorded at step 1500
+
++ ROC_AUC = 0.9777404501812108
++               precision    recall  f1-score   support
+
+           0       1.00      0.94      0.97      9723
+           1       0.30      0.93      0.45       277
+
+    accuracy                           0.94     10000
+   macro avg       0.65      0.93      0.71     10000
+weighted avg       0.98      0.94      0.95     10000
+
+- Pos: neg = 1:5
+Weight = 1:1
+2019-06-05T05:01:36.125039932Z INFO:root:	------------------ 	Begin Evaluation	------------------
+2019-06-05T05:01:38.457204886Z INFO:root:Number of batchs: 14
+2019-06-05T05:01:38.459489734Z INFO:root:L_mean: 0.1211±0.0499 	 	 P: 0.9225±0.0000 	 R: 0.9366±0.0000 	 F1: 0.9294±0.0000 	 Duration: 2.334 s/step
+2019-06-05T05:01:38.459517808Z INFO:root:	------------------ 	End Evaluation	------------------
+2019-06-05T05:01:38.459526743Z
+2019-06-05T05:01:38.459530231Z
+2019-06-05T05:01:38.865375148Z INFO:root:New best score: -0.12106702423521451
+2019-06-05T05:01:38.865399505Z INFO:root:Saved model at /source/main/train/output/saved_models//LSTMAttention/2019-06-05T04:53:38
+2019-06-05T05:01:38.865405600Z INFO:root:Current best score: -0.12106702423521451 recorded at step 1500
++ ROC_AUC = 0.9840799533355536
+              precision    recall  f1-score   support
+
+           0       1.00      0.98      0.99      9723
+           1       0.51      0.87      0.64       277
+
+    accuracy                           0.97     10000
+   macro avg       0.75      0.92      0.81     10000
+weighted avg       0.98      0.97      0.98     10000
+
+
+-/source/main/train/output/saved_models//LSTMAttention/2019-06-05T06:40:58/3000.pt
++ Weight = 1:3
++ pos:neg = 1:10
++ ROC_AUC = 0.9854463215918486
++ threshold = 0.8
+              precision    recall  f1-score   support
+
+           0       1.00      0.98      0.99      9723
+           1       0.59      0.83      0.69       277
+
+*** P = 0.59:
+Test 100 mention prob>=0.8 & label=0
+All are about Price
+Samples: https://docs.google.com/spreadsheets/d/17Cdqr1N4ijM2z8hYP9ihR0_V9NKOnwAHV8IB_pNgBQY/edit#gid=1040918533
+*** R = 0.92 (threshold=0.5)
+Sai cung hop ly vi it xuat hien:
+- bên mình tv ss cong 4k có dưới 20tr k
+- Tuỳ bé hợp sữa nào thôi mom với lại càng lớn cân nặng sẽ phát triển chậm lại chứ ko như lúc nhỏ bé nhà m gần 30 tháng rồi mà vẫn 18kg số kí đó lâu lắm rồi mà mình ko thấy lên tí nào . Bé lớn hoạt động nhiều tiêu hao nhiều năng lượng lắm . Hồi 1y thì dùng meiji nay bé lớn m đổi grow plus của nuti cho nhẹ tiền mà tiện mình thấy sữa cũng ok béo ngậy thơm .
+- Tivi đẹp mỗi tội không tiền ! ! ! 😂😂😂
+

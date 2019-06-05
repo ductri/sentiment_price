@@ -7,7 +7,7 @@ from sklearn.metrics import precision_score, recall_score, roc_auc_score, classi
     average_precision_score
 import torch
 
-from utils.training_checker import MyTrainingChecker
+from naruto_skills.training_checker import MyTrainingChecker
 from utils import metrics
 
 
@@ -22,7 +22,7 @@ def __eval(model, data_loader, device, extra_logging=False):
     model.eval()
     for idx, inputs in enumerate(data_loader):
         inputs = [i.to(device) for i in inputs]
-        loss_np = model.get_loss(inputs[0], inputs[2])
+        loss_np = model.get_loss(inputs[0], inputs[2]).item()
         loss_tracking.add(loss_np)
 
         prob_tensor = model(*inputs)
@@ -35,7 +35,7 @@ def __eval(model, data_loader, device, extra_logging=False):
 
     logging.info('L_mean: %.4f±%.4f \t \t P: %.4f±%.4f \t R: %.4f±%.4f \t F1: %.4f±%.4f '
                  '\t Duration: %.3f s/step' %
-                     (loss_tracking.mean(), float(np.std(loss_tracking._figures)),
+                     (loss_tracking.mean(), float(np.std(loss_tracking.figures)),
                       precision_score(y_true=trues_np, y_pred=preds_np, average='macro'), 0,
                       recall_score(y_true=trues_np, y_pred=preds_np, average='macro'), 0,
                       f1_score(y_true=trues_np, y_pred=preds_np, average='macro'), 0,
@@ -57,7 +57,7 @@ def train(model, train_loader, eval_loader, dir_checkpoint, device, num_epoch=10
         sample_size = 5
         tensors = [input_tensor[:sample_size] for input_tensor in tensors]
         prob_predict = model(*tensors)
-        prob_predict_np = prob_predict.cpu.numpy()
+        prob_predict_np = prob_predict.cpu().numpy()
         predict_np = torch.argmax(prob_predict, dim=1).cpu().numpy()
         target_np = tensors[2].cpu().numpy()
         word_input_np = tensors[0].cpu().numpy()
@@ -88,7 +88,7 @@ def train(model, train_loader, eval_loader, dir_checkpoint, device, num_epoch=10
         for inputs in train_loader:
             inputs = [i.to(device) for i in inputs]
             start = time.time()
-            train_loss = model.train_batch(inputs[:2], inputs[2])
+            train_loss = model.train_batch(inputs[0], inputs[2])
             t_loss_tracking.add(train_loss)
             step += 1
             with torch.no_grad():
@@ -102,7 +102,7 @@ def train(model, train_loader, eval_loader, dir_checkpoint, device, num_epoch=10
                     train_recall = recall_score(y_true=target_np, y_pred=predict_np, average='macro')
                     logging.info(
                         'Step: %s \t L: %.4f±%.4f \t P: %.4f±%.4f \t R: %.4f±%.4f \t Duration: %.3f s/step' % (
-                            step, t_loss_tracking.mean(), float(np.std(t_loss_tracking._figures)),
+                            step, t_loss_tracking.mean(), float(np.std(t_loss_tracking.figures)),
                             train_precision, 0,
                             train_recall, 0,
                             time.time() - start))
