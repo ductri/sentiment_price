@@ -1,4 +1,3 @@
-import os
 import logging
 import time
 
@@ -8,7 +7,6 @@ from sklearn.metrics import precision_score, recall_score, roc_auc_score, classi
 import torch
 
 from naruto_skills.training_checker import MyTrainingChecker
-from utils import metrics
 
 
 def __eval(model, data_loader, device, extra_logging=False):
