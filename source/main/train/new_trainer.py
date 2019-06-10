@@ -109,11 +109,11 @@ class Evaluator:
         :return:
         """
         # All metrics are measured by the whole evaluation set
-        current_state = {'score_mean': None, 'score_std': None, 'P': None, 'R': None, 'F1': None, 'AUC': None}
+        current_state = {'loss': None, 'loss_std': None, 'P': None, 'R': None, 'F1': None, 'AUC': None}
 
         losses_np, probs_np, trues_np = measures
-        current_state['score_mean'] = np.mean(losses_np)
-        current_state['score_std'] = np.mean(losses_np)
+        current_state['loss'] = np.mean(losses_np)
+        current_state['loss_std'] = np.mean(losses_np)
         current_state['P'] = metrics.precision_score(y_true=trues_np, y_pred=probs_np >= 0.5)
         current_state['R'] = metrics.recall_score(y_true=trues_np, y_pred=probs_np >= 0.5)
         current_state['F1'] = metrics.f1_score(y_true=trues_np, y_pred=probs_np >= 0.5)
@@ -142,7 +142,7 @@ class Evaluator:
             current_state['step'] = global_step
             current_state['duration'] = time.time() - start
             self.eval_logger.run(current_state)
-            self.checker.update(current_state['score_mean'], current_state['step'])
+            self.checker.update(-current_state['loss'], current_state['step'])
 
     def __move_input_to_device(self, inputs):
         inputs = [i.to(self.device) for i in inputs]
@@ -182,10 +182,10 @@ class TrainingLogger:
         # We only do streaming loss because loss figure is calculated every steps, no matter our want
         self.__current_state = {'streaming_loss': []}
 
-        self.tag_loss = 'train/loss'
-        self.tag_p = 'train/p'
-        self.tag_r = 'train/r'
-        self.tag_duration = 'train/duration'
+        self.tag_loss = 'loss'
+        self.tag_p = 'P'
+        self.tag_r = 'R'
+        self.tag_duration = 'duration'
 
     def run(self, current_state):
         self.model.eval()
@@ -259,7 +259,7 @@ class EvaluateLogger:
         current_state = copy.deepcopy(current_state)
         step = current_state['step']
         del current_state['step']
-        data_to_log = [('eval/%s' % k, v) for k, v in current_state.items()]
+        data_to_log = [('%s' % k, v) for k, v in current_state.items()]
         for tag_name, value in data_to_log:
             self.my_logger.add_scalar(tag_name, value, step)
 

@@ -23,6 +23,7 @@ class LSTMAttention(nn.Module):
 
         self.xent = None
         self.optimizer = None
+        self.loss_class_weight = torch.tensor([1., 1.])
 
     def __inner_forward(self, word_input, *args):
         """
@@ -48,7 +49,7 @@ class LSTMAttention(nn.Module):
 
     def train(self, mode=True):
         if self.xent is None:
-            self.register_buffer('class_weight', tensor=torch.tensor([1., 1.]))
+            self.register_buffer('class_weight', tensor=self.loss_class_weight)
             # Never use `mean`, it does not care about my weight
             self.xent = nn.CrossEntropyLoss(reduction='none', weight=self.class_weight)
         if self.optimizer is None:

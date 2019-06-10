@@ -71,15 +71,15 @@ def create_data_loader(path_to_csv, batch_size, num_workers, size=None, shuffle=
 
 
 def get_dl_train(batch_size, size=None):
-    return create_data_loader(ROOT + 'main/data_for_train/output/is_price/train.csv', batch_size,
-                              NUM_WORKERS, size=size, shuffle=True, is_scale=True)
+    return create_data_loader(ROOT + 'main/data_for_train/output/is_price_question/train.csv', batch_size,
+                              NUM_WORKERS, size=size, shuffle=True, is_scale=False)
 
 
 def get_dl_test(batch_size):
-    return create_data_loader(ROOT + 'main/data_for_train/output/is_price/test.csv', batch_size,
-                              NUM_WORKERS, shuffle=False)
+    return create_data_loader(ROOT + 'main/data_for_train/output/is_price_question/test.csv', batch_size,
+                              NUM_WORKERS, shuffle=False, is_scale=False)
 
 
 def get_dl_eval(batch_size, size=None):
-    return create_data_loader(ROOT + 'main/data_for_train/output/is_price/eval.csv', batch_size,
-                              NUM_WORKERS, shuffle=False, size=size, is_scale=True)
+    return create_data_loader(ROOT + 'main/data_for_train/output/is_price_question/eval.csv', batch_size,
+                              NUM_WORKERS, shuffle=False, size=size, is_scale=False)

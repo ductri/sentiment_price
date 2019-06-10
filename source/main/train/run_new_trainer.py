@@ -5,7 +5,7 @@ from datetime import datetime
 import torch
 from naruto_skills.training_checker import TrainingChecker
 
-from data_for_train import dataset as my_dataset
+from data_for_train import is_question as my_dataset
 from model_def.lstm_attention import LSTMAttention
 from utils import pytorch_utils
 from train.new_trainer import TrainingLoop, TrainingLogger, EvaluateLogger, Evaluator
@@ -24,15 +24,15 @@ if __name__ == '__main__':
     BATCH_SIZE = 128
     NUM_EPOCHS = 500
     NUM_WORKERS = 0
-    PRINT_EVERY = 10
-    PREDICT_EVERY = 100
-    EVAL_EVERY = 100
+    PRINT_EVERY = 100
+    PREDICT_EVERY = 500
+    EVAL_EVERY = 500
     PRE_TRAINED_MODEL = ''
 
     my_dataset.bootstrap()
     train_loader = my_dataset.get_dl_train(batch_size=BATCH_SIZE, size=None)
     eval_loader = my_dataset.get_dl_eval(batch_size=BATCH_SIZE, size=None)
-    logging.info('There will be %s steps for training', NUM_EPOCHS * int((len(train_loader)/BATCH_SIZE)))
+    logging.info('There will be %s steps for training', NUM_EPOCHS * len(train_loader))
     model = LSTMAttention(vocab_size=len(my_dataset.voc.index2word), no_class=2)
     model.train()
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
